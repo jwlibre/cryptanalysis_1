@@ -64,7 +64,5 @@ for i in range(len(keychain)):
 	ALPHABET = ALPHABET.rename(columns = {'index':'plaintext',keyletter:'ciphertext'})
 	decrypt = decrypt + ALPHABET.loc[ALPHABET['ciphertext'] == cipherletter, 'plaintext'].values[0]
 
+print("Decrypted message below:")
 print(decrypt)
-pdb.set_trace()
-	
-	
