@@ -4,13 +4,18 @@ import pdb
 import pandas as pd
 import math
 
+# returns plaintext from a ciphertext enciphered using the Vigenere cipher,
+# taking the ciphertext and keyword as direct input from the user.
+
 alphabet = string.ascii_lowercase
 ALPHABET_UPPER = string.ascii_uppercase
 
 ALPHABETS = [alphabet[i:].upper() + alphabet[:i].upper() for i in range(len(alphabet))]
 
-ciphertext = raw_input("Type encrypted message here in all capitals: ")
-keyword = raw_input("Type keyword here in all capitals: ")
+ciphertext = raw_input("Type encrypted message here: ")
+ciphertext = ciphertext.upper()
+keyword = raw_input("Type keyword here: ")
+keyword = keyword.upper()
 
 # repeat the keyword so that it forms a 26-letter string
 num_reps = int(math.floor(26 / len(keyword)))
@@ -29,7 +34,7 @@ print(keyword_2)
 
 keyword_2 = list(keyword_2)
 
-# construct vig square
+# construct Vigenere square
 ALPHABETS_keys = [letter for letter in ALPHABET_UPPER] + ['keyword']
 ALPHABETS_vals = [list(ALPHABET) for ALPHABET in ALPHABETS] + [keyword_2]
 
