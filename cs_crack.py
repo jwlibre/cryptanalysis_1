@@ -4,24 +4,22 @@ import re
 # This script takes in a Caesar-shifted string from the user,
 # and outputs each of the 26 possible plaintexts.
 
-ALPHABET = string.ascii_uppercase
-alphabets = [ALPHABET[-i:].lower() + ALPHABET[:-i].lower() for i in range(len(ALPHABET))]
+def cs_crack(ciphertext):
 
-ciphertext = raw_input("Type encrypted message here: ")
-ciphertext = ciphertext.upper()
+	plaintexts = []
+	ciphertext = ciphertext.upper()
 
-for alphabet in alphabets:
-	decrypt = ciphertext
+	ALPHABET = string.ascii_uppercase
+	alphabets = [ALPHABET[-i:].lower() + ALPHABET[:-i].lower() for i in range(len(ALPHABET))]
 
-	for LETTER in ALPHABET:
+	for alphabet in alphabets:
+		decrypt = ciphertext
 
-		index = ALPHABET.find(LETTER)
-		decrypt = decrypt.replace(LETTER, alphabet[index])
+		for LETTER in ALPHABET:
 
-	print(decrypt)
+			index = ALPHABET.find(LETTER)
+			decrypt = decrypt.replace(LETTER, alphabet[index])
 
+		plaintexts.append(decrypt)
 
-
-
-
-
+	return plaintexts

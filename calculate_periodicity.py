@@ -1,6 +1,7 @@
 import string
 import pdb
 import matplotlib.pyplot as plt
+from cs_crack import cs_crack
 
 # this script takes in a message in ciphertext, which we assume has been written using a polyalphabetic cipher
 # to find the periodicity of the message, we can try different periodicities up to 26, and choose the value which returns the largest average index of coincidence
@@ -11,16 +12,16 @@ ALPHABET = string.ascii_uppercase
 def calc_ic(p, text, ALPHABET):
 
 	length = len(text)
-	
-	# divide the text into bins, according to the periodicity p	
-	
+
+	# divide the text into bins, according to the periodicity p
+
 	bins = {}
 	for k in range(0,p):
 		bins[k] = ''
 
 	for j in range(0, length):
 		bin_index = j % p
-		bins[bin_index] = bins[bin_index] + text[j]	
+		bins[bin_index] = bins[bin_index] + text[j]
 
 
 	frequency_analysis = {}
@@ -33,7 +34,7 @@ def calc_ic(p, text, ALPHABET):
 				if character == letter:
 					alphabet_temp[letter] = alphabet_temp[letter] + 1
 		frequency_analysis[i] = alphabet_temp
-	
+
 
 	# now calculate index of coincidence for each of the bins
 	indices_of_coincidence = {}
@@ -48,20 +49,12 @@ def calc_ic(p, text, ALPHABET):
 		try:
 			ic = numerator / denominator
 		except:
-			pdb.set_trace()		
+			pdb.set_trace()
 		indices_of_coincidence[i] = ic
 
 	average = sum(indices_of_coincidence.values())/len(indices_of_coincidence.values())
 
 	return (average, bins)
-
-
-
-
-
-
-
-
 
 
 
@@ -119,9 +112,26 @@ plt.ylabel('index of coincidence')
 plt.show()
 
 
-p = int(raw_input('To proceed, select the periodicity to test for frequency analysis: '))
+p = int(input('To proceed, select the periodicity to test for frequency analysis: '))
 
-bins = calc_ic(p, text, ALPHABET)[1]
+bins = calc_ic(p, text, ALPHABET)[1].values()
+# each bin contains text jumbled in its own Caesar cipher
+# so, skip the frequency analysis and just do Caesar shift decryptions for each
+# bin, then insert them character-wise covering all possible permutations
+
+poss_plain_bins = []
+for bin in bins:
+	all_plain_bin = cs_crack(bin)
+	poss_plain_bins.append(all_plain_bin)
+
+# now, each bin has 26 possible plaintext decryptions.
+# we need to cycle over each of these plaintext decryptions for each bin,
+# adding characters one-by-one from each bin in the bin order.
+
+plaintexts = []
+for x in range(len(bins)):
+	for y in range(len(poss_plain_bins[0])): # doesn't matter which index we use here as they're all the same length
+		temp_str = ''
+
 
 pdb.set_trace()
-
